@@ -111,25 +111,26 @@ def train_and_persist(persist=None, random_state=42, compression_factor=False):
     X_train = train.drop(columns=["cnt"], axis=1)
     y_train = train["cnt"]
 
-    # Grid search
-    gsc = GridSearchCV(
-        estimator=RandomForestRegressor(random_state=random_state),
-        param_grid={
-            "max_depth": [10, 40],
-            "min_samples_leaf": [1, 2],
-            "min_samples_split": [2, 5],
-            "n_estimators": [200, 400],
-        },
-        cv=5,
-        scoring="r2",
-        verbose=2,
-        n_jobs=4,
-    )
+    # # Grid search
+    # gsc = GridSearchCV(
+    #     estimator=RandomForestRegressor(random_state=random_state),
+    #     param_grid={
+    #         "max_depth": [10, 40],
+    #         "min_samples_leaf": [1, 2],
+    #         "min_samples_split": [2, 5],
+    #         "n_estimators": [200, 400],
+    #     },
+    #     cv=5,
+    #     scoring="r2",
+    #     verbose=2,
+    #     n_jobs=4,
+    # )
 
-    grid_result = gsc.fit(X_train, y_train)
+    # grid_result = gsc.fit(X_train, y_train)
 
-    # Retrieve the best estimator from the grid search
-    model = gsc.best_estimator_
+    # # Retrieve the best estimator from the grid search
+    # model = gsc.best_estimator_
+    model = RandomForestRegressor(random_state=random_state).fit(X_train, y_train)
 
     # Dump the model as a pkl object
     pkl_path = [os.path.join(pkl_path, "model.pkl"), pkl_path][pkl_path[-4:] == ".pkl"]
@@ -410,4 +411,4 @@ def predict(
     # Feed the processed observation to the regressor and retrieve prediction
     pred = model.predict(np.array(df).reshape(1, -1))
 
-    return pred[0]
+    return pred[0]*pred[0]
