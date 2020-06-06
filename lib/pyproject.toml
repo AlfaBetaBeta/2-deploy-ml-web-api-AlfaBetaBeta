@@ -10,7 +10,7 @@ home-page = "https://github.com/IE-Advanced-Python/1-package-ml-model-group-5"
 requires = [
             "joblib",
             "pandas",
-            "scikit-learn",
+            "scikit-learn<=0.22.1",
            ]
 
 [tool.flit.metadata.requires-extra]
