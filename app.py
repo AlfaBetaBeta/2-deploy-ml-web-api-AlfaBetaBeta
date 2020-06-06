@@ -32,11 +32,6 @@ def api_train_and_persist():
     return {"status": "ok", "persisted-model-parameters": regressor.get_params()}
 
 
-# @app.errorhandler(400)
-# def key_not_found(e):
-#     # return jsonify(error=str(e)), 400
-
-
 @app.route("/predict")
 def api_predict():
     """Endpoint to retrieve model predictions from URL parameters"""
