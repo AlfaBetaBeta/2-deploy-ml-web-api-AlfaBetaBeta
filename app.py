@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, jsonify
 
 import sklearn
 import ie_bike_model
@@ -30,6 +30,11 @@ def api_train_and_persist():
     }
 
 
+# @app.errorhandler(400)
+# def key_not_found(e):
+#     # return jsonify(error=str(e)), 400
+
+
 @app.route("/predict")
 def api_predict():
     """Endpoint to retrieve model predictions from URL parameters"""
@@ -44,7 +49,7 @@ def api_predict():
     	args["windspeed"] = float(args["windspeed"])
 
     except:
-        abort(400)
+        abort(400, description="400: Missing/incorrect URL parameters.\n\nMake sure these are passed as:\n\n?date\n?weathersit\n?temperature_C\n?feeling_temperature_C\n?humidity\n?windspeed")
 
     return {"result": predict(args)}
 
