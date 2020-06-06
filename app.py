@@ -1,7 +1,8 @@
 from flask import Flask, request, abort
 
 import sklearn
-# from ie_nlp_utils.tokenization import tokenize as tk
+import ie_bike_model
+from ie_bike_model.model import train_and_persist
 
 import argparse
 from platform import python_version
@@ -14,5 +15,6 @@ def api_get_versions():
     # args = dict(request.args)
     return {
     "scikit-learn": sklearn.__version__,
+    "ie-bike-model": ie_bike_model.__version__,
     "Python": python_version(),
     }
