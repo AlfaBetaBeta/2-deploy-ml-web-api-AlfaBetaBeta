@@ -23,10 +23,10 @@ def api_get_versions():
     }
 
 
-@app.route("/train_and_persist")
+@app.route("/train_and_persist", methods=['POST'])
 def api_train_and_persist():
     """Endpoint to train and persist the model defined in lib/"""
-    train_and_persist(compression_factor=True)
+    # train_and_persist()
     return {
     "status": "ok",
     }
@@ -52,7 +52,7 @@ def api_predict():
     	args["windspeed"] = float(args["windspeed"])
 
     except:
-        abort(400, description="400: Missing/incorrect URL parameters.\n\nMake sure these are passed as:\n\n?date\n?weathersit\n?temperature_C\n?feeling_temperature_C\n?humidity\n?windspeed")
+        abort(400, description="400: Missing/incorrect URL parameters.\n\nMake sure these are passed as:\n\n?date\n&weathersit\n&temperature_C\n&feeling_temperature_C\n&humidity\n&windspeed")
 
     return {"result": predict(args), "elapsed_time": round(time.time() - start_time, 3)}
 
