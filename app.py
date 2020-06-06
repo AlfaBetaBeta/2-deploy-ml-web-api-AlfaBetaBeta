@@ -1,9 +1,7 @@
 from flask import Flask, request, abort, jsonify
-
 import sklearn
 import ie_bike_model
 from ie_bike_model.model import train_and_persist, predict
-
 import argparse
 from platform import python_version
 import datetime as dt
