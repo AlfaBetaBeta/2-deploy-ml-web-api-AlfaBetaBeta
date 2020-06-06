@@ -9,6 +9,7 @@ from platform import python_version
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def api_get_versions():
     """Basic endpoint displaying relevant versions"""
@@ -16,6 +17,14 @@ def api_get_versions():
     "scikit-learn": sklearn.__version__,
     "ie-bike-model": ie_bike_model.__version__,
     "Python": python_version(),
+    }
+
+@app.route("/train_and_persist")
+def api_train_and_persist():
+    """Endpoint to train and persist the model defined in lib/"""
+    train_and_persist(compression_factor=True)
+    return {
+    "status": "ok",
     }
 
 
