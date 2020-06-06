@@ -7,6 +7,8 @@ from ie_bike_model.model import train_and_persist, predict
 import argparse
 from platform import python_version
 import datetime as dt
+import time
+
 
 app = Flask(__name__)
 
@@ -38,6 +40,7 @@ def api_train_and_persist():
 @app.route("/predict")
 def api_predict():
     """Endpoint to retrieve model predictions from URL parameters"""
+    start_time = time.time()
     args = dict(request.args)
     
     try:
@@ -51,7 +54,7 @@ def api_predict():
     except:
         abort(400, description="400: Missing/incorrect URL parameters.\n\nMake sure these are passed as:\n\n?date\n?weathersit\n?temperature_C\n?feeling_temperature_C\n?humidity\n?windspeed")
 
-    return {"result": predict(args)}
+    return {"result": predict(args), "elapsed_time": round(time.time() - start_time, 3)}
 
 
 if __name__ == '__main__':
