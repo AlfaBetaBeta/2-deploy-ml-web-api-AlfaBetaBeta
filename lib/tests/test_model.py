@@ -75,7 +75,7 @@ def test_load_process_training_data():
     "persist, rand_state, comp_fact, result_instance",
     [
         ("/foo/bar/nowhere", 42, True, type(None)),
-        (None, 42, True, RandomForestRegressor),
+        # (None, 42, True, RandomForestRegressor),
         (None, 42, 10, type(None)),
         (None, 42, ("gzip", 10), type(None)),
     ],
@@ -84,6 +84,9 @@ def test_train_and_persist(persist, rand_state, comp_fact, result_instance):
     assert isinstance(
         model.train_and_persist(persist, rand_state, comp_fact), result_instance,
     ), "Returned object is not {}".format(result_instance)
+    assert isinstance(model.train_and_persist(None, 42, True)[0], RandomForestRegressor)
+    assert isinstance(model.train_and_persist(None, 42, True)[1], np.float64)
+    assert isinstance(model.train_and_persist(None, 42, True)[2], list)
 
 
 # check_and_retrieve pytest
@@ -125,7 +128,7 @@ def test_process_new_observation(df, result_instance):
 
 # predict pytest
 @pytest.mark.parametrize(
-    "dct, result_instance", [(idct, float), (wdct, type(None)), (hdct, float)]
+    "dct, result_instance", [(idct, int), (wdct, type(None)), (hdct, int)]
 )
 def test_predict(dct, result_instance):
     assert isinstance(
