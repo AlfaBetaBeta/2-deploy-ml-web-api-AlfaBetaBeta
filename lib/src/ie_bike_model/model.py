@@ -130,7 +130,9 @@ def train_and_persist(persist=None, random_state=42, compression_factor=False):
 
     # # Retrieve the best estimator from the grid search
     # model = gsc.best_estimator_
-    model = RandomForestRegressor(random_state=random_state, oob_score=True).fit(X_train, y_train)
+    model = RandomForestRegressor(random_state=random_state, oob_score=True).fit(
+        X_train, y_train
+    )
 
     # Dump the model as a pkl object
     pkl_path = [os.path.join(pkl_path, "model.pkl"), pkl_path][pkl_path[-4:] == ".pkl"]
@@ -139,9 +141,17 @@ def train_and_persist(persist=None, random_state=42, compression_factor=False):
     # Alongside the model, return:
     # - R2 score using out-of-bag estimate
     # - its 10 most important features
-    top10_importances = list(model.feature_importances_[np.argsort(model.feature_importances_)][-10:])
-    top10_features = list(np.array(X_train.columns)[np.argsort(model.feature_importances_)][-10:])
-    return model, model.oob_score_, list(zip(top10_features[::-1], top10_importances[::-1]))
+    top10_importances = list(
+        model.feature_importances_[np.argsort(model.feature_importances_)][-10:]
+    )
+    top10_features = list(
+        np.array(X_train.columns)[np.argsort(model.feature_importances_)][-10:]
+    )
+    return (
+        model,
+        model.oob_score_,
+        list(zip(top10_features[::-1], top10_importances[::-1])),
+    )
 
 
 def check_and_retrieve(
@@ -190,7 +200,7 @@ def check_and_retrieve(
                 )
             return None
     elif persist:
-        model, _ , _ = train_and_persist(
+        model, _, _ = train_and_persist(
             persist=persist,
             random_state=random_state,
             compression_factor=compression_factor,
@@ -200,7 +210,7 @@ def check_and_retrieve(
             with open(os.path.join(os.path.expanduser("~"), "model.pkl"), "rb") as f:
                 model = joblib.load(f)
         except:
-            model, _ , _ = train_and_persist(
+            model, _, _ = train_and_persist(
                 persist=persist,
                 random_state=random_state,
                 compression_factor=compression_factor,
