@@ -411,4 +411,4 @@ def predict(
     # Feed the processed observation to the regressor and retrieve prediction
     pred = model.predict(np.array(df).reshape(1, -1))
 
-    return pred[0] * pred[0]
+    return int(pred[0] * pred[0])
