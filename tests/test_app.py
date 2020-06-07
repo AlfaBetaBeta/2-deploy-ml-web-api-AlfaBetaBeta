@@ -2,6 +2,7 @@ from flask import Flask
 import sklearn
 import ie_bike_model
 from platform import python_version
+import numpy as np
 
 import pytest
 import os, sys
@@ -29,6 +30,12 @@ def test_api_train_and_persist():
         assert isinstance(flaskapp.api_train_and_persist(), dict)
         assert isinstance(
             flaskapp.api_train_and_persist().get("persisted-model-parameters"), dict
+        )
+        assert isinstance(
+            flaskapp.api_train_and_persist().get("out-of-bag-R2-score"), np.float64
+        )
+        assert isinstance(
+            flaskapp.api_train_and_persist().get("top10-feature-importances"), list
         )
 
 
