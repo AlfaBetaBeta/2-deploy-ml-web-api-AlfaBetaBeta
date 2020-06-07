@@ -25,9 +25,9 @@ def api_get_versions():
 @app.route("/train_and_persist")
 def api_train_and_persist():
     """Endpoint to train and persist the model defined in lib/"""
-    regressor = train_and_persist(compression_factor=True)
+    regressor, score, top10_features = train_and_persist(compression_factor=True)
 
-    return {"status": "ok", "persisted-model-parameters": regressor.get_params()}
+    return {"status": "ok", "persisted-model-parameters": regressor.get_params(), "out-of-bag-R2-score": score, "top10-feature-importances": top10_features}
 
 
 @app.route("/predict")
