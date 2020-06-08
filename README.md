@@ -15,7 +15,7 @@ in your browser to check the endpoint `/predict` or [this link](http://127.0.0.1
 
 [This link](http://127.0.0.1:5000/train_and_persist) may be used in Postman to make a POST request and check the endpoint `/train_and_persist`:
 
-![postman](/img/postman.png?raw=true "Optional Title")
+![postman](/img/postman.png?raw=true)
 
 ## Testing
 
