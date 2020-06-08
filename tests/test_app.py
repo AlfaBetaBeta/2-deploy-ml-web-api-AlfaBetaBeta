@@ -2,7 +2,6 @@ from flask import Flask
 import sklearn
 import ie_bike_model
 from platform import python_version
-import numpy as np
 
 import pytest
 import os, sys
@@ -26,17 +25,13 @@ def test_api_get_versions():
 
 
 def test_api_train_and_persist():
-    with flaskapp.app.test_request_context("/train_and_persist"):
-        assert isinstance(flaskapp.api_train_and_persist(), dict)
-        assert isinstance(
-            flaskapp.api_train_and_persist().get("persisted-model-parameters"), dict
-        )
-        assert isinstance(
-            flaskapp.api_train_and_persist().get("out-of-bag-R2-score"), np.float64
-        )
-        assert isinstance(
-            flaskapp.api_train_and_persist().get("top10-feature-importances"), list
-        )
+    with flaskapp.app.test_client() as tc:
+        url = "/train_and_persist"
+        response = tc.post(url, data={})
+        assert isinstance(response.json, dict)
+        assert isinstance(response.json["persisted-model-parameters"], dict)
+        assert isinstance(response.json["out-of-bag-R2-score"], float)
+        assert isinstance(response.json["top10-feature-importances"], list)
 
 
 valid_endpoint = "/predict?date=2012-01-01T00:00:00&weathersit=1&temperature_C=9.84&feeling_temperature_C=14.395&humidity=81.0&windspeed=0"
